@@ -2,8 +2,6 @@
 
 Selenium Grid:
 
-java -jar lib/selenium-server-standalone-3.0.1.jar -role hub -host 192.168.86.101
-
 [Centos 7]
 - Added seleniumgrid.xml to /etc/firewalld/services
 - Added service to firewall and restarted firewall
@@ -11,3 +9,8 @@ java -jar lib/selenium-server-standalone-3.0.1.jar -role hub -host 192.168.86.10
 	systemctl stop firewalld.service
 	systemctl start firewalld.service
 
+
+java -jar lib/selenium-server-standalone-3.0.1.jar -role hub -host 192.168.86.101
+
+The console can then be accessed at 
+http://192.168.86.101:4444/grid/console
