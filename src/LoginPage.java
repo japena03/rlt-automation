@@ -24,5 +24,4 @@ public class LoginPage {
         // TODO: Don't use sleep method, use webdriverwait
         Thread.sleep(5000);
 	}
-
 }
