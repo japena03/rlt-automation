@@ -28,7 +28,7 @@ public class CentersPageRegression {
         lp = new LoginPage(driver);
         cp = new CentersPage(driver);
 
-        lp.login("rhino","sadm","ems");
+        lp.login("localhost","sadm","ems");
         cp.goToGeneralAdmin();
         cp.clickCentersLink();
     }
