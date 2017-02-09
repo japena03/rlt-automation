@@ -17,4 +17,6 @@ http://192.168.86.101:4444/grid/console
 
 Selenium Node:
 
-java -Dwebdriver.gecko.driver.exe -jar lib\selenium-server-standalone-3.0.1.jar -role node -nodeConfig config\nodeConfig.json -host 192.168.86.100
+(Note that the Dwebdriver flag must come before the jar parameter)
+
+java -Dwebdriver.gecko.driver="D:\Git\rlt-automation\config\geckodriver.exe" -jar lib\selenium-server-standalone-3.0.1.jar -role node -nodeConfig config\nodeConfig.json -host 192.168.86.100
