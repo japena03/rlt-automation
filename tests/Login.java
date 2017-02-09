@@ -4,16 +4,17 @@ import java.net.URL;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 
 public class Login {
-	
+
 	private WebDriver driver;
-	
+
 	@AfterTest
-    public void afterTest() {
-    	driver.quit();
-    }
+	public void afterTest() {
+		driver.quit();
+	}
 
 	@Test
 	public void loginTest() throws Exception {
@@ -29,6 +30,4 @@ public class Login {
 		// login.login("localhost", "sadm", "ems");
 		driver.get("https://www.google.com/");
 	}
-        
-        
 }
