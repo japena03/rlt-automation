@@ -11,6 +11,7 @@ public class Login {
         @Test
         public void loginTest() throws Exception{
             String hubUrl = "http://192.168.86.101:4444/wd/hub";
+            System.setProperty("webdriver.gecko.driver","D:\\Git\\rlt-automation\\config\\geckodriver.exe");
             
             DesiredCapabilities capability = DesiredCapabilities.firefox();
             capability.setCapability("marionette", true);
