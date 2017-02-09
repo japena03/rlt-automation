@@ -1,0 +1,67 @@
+<project name="rlt-automation" basedir=".">
+	<!-- 
+	   Initialize Properties 
+	-->
+	<property name="build.dir" value="${basedir}/build"/>
+	<property name="lib.dir" value="${basedir}/lib"/>
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="tests.dir" value="${basedir}/tests/"/>
+
+	<target name="setClassPath">
+		<path id="classpath_jars">
+			<pathelement path="${basedir}/"/>
+			<fileset dir="${lib.dir}" includes="testng/6.10/*.jar"/>
+			<fileset dir="${lib.dir}" includes="selenium/3.0.1/*.jar"/>
+		</path>
+		<!-- 
+		  Convert jar collection from a given reference into one list, storing
+		  the result into a given property separated by colon
+		-->
+		<pathconvert pathsep=":" property="test.classpath" refid="classpath_jars"/>
+	</target>
+
+	<target name="loadTestNG" depends="setClassPath">
+		<!-- Creating task definition for TestNG task -->
+		<taskdef resource="testngtasks" classpath="${test.classpath}"/>
+	</target>
+	<target name="init">
+		<!-- Creating build directory structure used by compile -->
+		<mkdir dir="${build.dir}"/>
+	</target>
+	<target name="clean">
+		<echo message="deleting existing build directory"/>
+		<delete dir="${build.dir}"/>
+	</target>
+		<!-- 
+		     			In compile target dependency is given over clean target followed by init,
+			this order makes sure that build directory gets created before compile 
+			takes place. This is how clean compile is achieved.
+		-->
+	<target name="compile" depends="clean,init,setClassPath,loadTestNG">
+		<echo message="classpath: ${test.classpath}"/>
+		<echo message="compiling..."/>
+		<javac destdir="${build.dir}" srcdir="${src.dir}" classpath="${test.classpath}"/>
+		<javac destdir="${build.dir}" srcdir="${tests.dir}" classpath="${test.classpath}"/>
+		
+		<!-- I might need to copy the data files to the build dir when I get to that point -->
+		
+	</target>
+	<target name="run" depends="compile">
+		<!-- 
+		     			TestNG classpath has been provided reference of jar files and compiled classes,
+			this will generate report NG report
+		-->
+		<testng classpath="${test.classpath}:${build.dir}">
+			<xmlfileset dir="${tests.dir}" includes="testng.xml"/>
+		</testng>
+	</target>
+	<target name="login" depends="compile">
+                <!--
+                                             TestNG classpath has been provided reference of jar files and compiled classes,
+                        this will generate report NG report
+                -->
+                <testng classpath="${test.classpath}:${build.dir}">
+                        <xmlfileset dir="${tests.dir}" includes="loginTest.xml"/>
+                </testng>
+        </target>
+</project>
