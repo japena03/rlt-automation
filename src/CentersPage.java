@@ -1,11 +1,8 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-//import org.openqa.selenium.support.ui.ExpectedCondition;
-//import org.openqa.selenium.support.ui.ExpectedConditions;
-//import org.openqa.selenium.support.ui.WebDriverWait;
-//
-//import java.rmi.server.ExportException;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CentersPage extends BaseAdmin {
 
@@ -43,21 +40,29 @@ public class CentersPage extends BaseAdmin {
         nameField.sendKeys(name);
     }
 
-    public void setParentCenter(String parentCenter) throws InterruptedException {
+    public void setParentCenter(String parentCenter) throws Exception {
         String parentCenterCombolistXpath = "//div[starts-with(@class,\"x-combo-list\") and text()=\"" + parentCenter + "\"]";
-        WebElement parentCenterField = driver.findElement(By.xpath(parentCenterFieldXpath));
-        parentCenterField.sendKeys(parentCenter);
-        waitForElement(parentCenterCombolistXpath);
-
+        String parentCenterDropdownButton = "((//div[starts-with(@role, \"combobox\")])//img)[2]";
+        
+        WebElement dropdownbutton = driver.findElement(By.xpath(parentCenterDropdownButton));
+        dropdownbutton.click();
+		
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(parentCenterCombolistXpath)));
+        
         WebElement parentCenterCombolist = driver.findElement(By.xpath(parentCenterCombolistXpath));
         parentCenterCombolist.click();
     }
 
     public void setCoverage(String coverage) throws InterruptedException {
         String coverageCombolistXpath = "//div[starts-with(@class,\"x-combo-list\") and text()=\"" + coverage + "\"]";
-        WebElement coverageField = driver.findElement(By.xpath(coverageFieldXpath));
-        coverageField.sendKeys(coverage);
-        waitForElement(coverageCombolistXpath);
+        String coverageDropdownButton = "((//div[starts-with(@role, \"combobox\")])//img)[3]";
+        
+        WebElement dropdownbutton = driver.findElement(By.xpath(coverageDropdownButton));
+        dropdownbutton.click();
+        
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(coverageCombolistXpath)));
 
         WebElement coverageCombolist = driver.findElement(By.xpath(coverageCombolistXpath));
         coverageCombolist.click();

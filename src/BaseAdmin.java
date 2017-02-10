@@ -287,7 +287,7 @@ public class BaseAdmin extends BaseSite {
         WebElement columnHeader = columnsRoot.findElement(By.xpath("./td[" + columnNumber + "]/div"));
         scrollToElement(columnHeader);
         Actions builder = new Actions(driver);
-        builder.moveToElement(columnHeader).build().perform();
+        builder.moveToElement(columnHeader).build().perform(); // Bug in selenium, refer to https://github.com/SeleniumHQ/selenium/issues/2285 
 
         /*
            * Click on dropdown button after it appears
