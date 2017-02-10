@@ -27,9 +27,10 @@ public class CentersPageRegression {
         capability = DesiredCapabilities.firefox();
 
         // To test local comment out RemoteWebDriver line and uncomment FirefoxDriver and System.setProperty lines
-        //        driver = new RemoteWebDriver(new URL(hubUrl), capability);
-        System.setProperty("webdriver.gecko.driver", "D:\\Git\\rlt-automation\\config\\geckodriver.exe");
-        driver = new FirefoxDriver();
+        // node does not need to be running in order to test locally
+        driver = new RemoteWebDriver(new URL(hubUrl), capability);
+//        System.setProperty("webdriver.gecko.driver", "D:\\Git\\rlt-automation\\config\\geckodriver.exe");
+//        driver = new FirefoxDriver();
         
         driver.manage().window().maximize();
         
