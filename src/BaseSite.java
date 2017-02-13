@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
      */
 
 public class BaseSite {
-	private static WebDriver driver;
+	private WebDriver driver;
     private String generalAdminLinkXpath = "//span[@id=\"adminMenu\"]/a[1]";
     public static final String TONE_LOGO_XPATH = "/html/body/div[@id=\"topNavDiv\"]/div[@id=\"titleOuter\"]/img[@id=\"topNavLogo\"]";
 
