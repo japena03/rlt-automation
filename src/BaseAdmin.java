@@ -11,19 +11,17 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BaseAdmin extends BaseSite {
 	protected WebDriver driver;
-	private String adminApplyButtonXpath = "((//div[@class=\"x-panel-footer\"])//button)[3]";
-    private String columnsRootXpath = "/html/body/div[@id=\"bodyContentOuter\"]/div/div[@id=\"main\"]/div[@id=\"mainContent\"]/div[@id=\"mainContentGridPanel\"]//div[@id=\"grid\"]//div[@class=\"x-grid3-header\"]//table/tbody/tr";
-    private String filterButtonDdXpath = "(//div[@id=\"x-menu-el-FilterRowUI\"]//img)[1]";
-    private String bottomPanelRootXpath = "//div[@id=\"gridPager\"]/table/tbody/tr";
-    private String columnsMenuXpath = "(//div[@class=\" x-ignore x-menu x-component\"]//a)[3]";
     private HashMap<String,Integer> allColumnHeaders;
     private ArrayList<String> positionToColumnName;
     private ArrayList<HashMap<String, String>> allRows;
     private WebElement gridRoot;
+    private WebElement bottomPanelItems;
 
     BaseAdmin(WebDriver driver){
         super(driver);
-        this.driver = driver;
+        this.driver = driver; //TODO Why am i setting it here and passing it up to the parent class? Driver in parent should be public
+        
+        bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
     }
 
 	public void clickRefreshButton() {
@@ -38,14 +36,13 @@ public class BaseAdmin extends BaseSite {
 	}
 	
 	public void clickNewButton() {
-        String adminNewButtonXpath = "//*[@id=\"new\"]/tbody/tr[2]/td[2]/em/button";
-		WebElement element = driver.findElement(By.xpath(adminNewButtonXpath));
+		WebElement element = driver.findElement(By.xpath(XpathConstants.ADMIN_NEW_BUTTON));
 		element.click();
         waitForApplyButton();
 	}
 	
 	public void clickApplyButton() throws InterruptedException {
-        WebElement applyButton = driver.findElement(By.xpath(adminApplyButtonXpath));
+        WebElement applyButton = driver.findElement(By.xpath(XpathConstants.ADMIN_APPLY_BUTTON));
 		applyButton.click();
         Thread.sleep(500);
         //checkForRequiredFields();
@@ -54,21 +51,18 @@ public class BaseAdmin extends BaseSite {
 	}
 
     private void clickFilterButton() throws Exception{
-        String filterButtonXpath = "(//div[@id=\"mainContentTop\"]//button)[4]";
-        WebElement filterButton = driver.findElement(By.xpath(filterButtonXpath));
+        WebElement filterButton = driver.findElement(By.xpath(XpathConstants.ADMIN_FILTER_BUTTON));
         filterButton.click();
 
         Thread.sleep(500);
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(filterButtonDdXpath)));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(XpathConstants.ADMIN_FILTER_COMP_DROPDOWN_BUTTON)));
     }
 	
-	public int createFilter(String column, String comparison, String value) throws Exception {
-        String rowsGridRootXpath = "/html/body/div[@id=\"bodyContentOuter\"]/div/div/div[@id=\"mainContent\"]/div[@id=\"mainContentGridPanel\"]//div[@class=\"x-grid3-body\"]";
-		String comparisonDropdownButton = "(//div[@id=\"x-menu-el-FilterRowUI\"]//img)[2]";
+	public int createFilter(String column, Comparison comparison, String value) throws Exception {
 		String filterColumnValueXpath = "(//div[@class=\" x-view x-combo-list-inner x-component x-unselectable\"])//div[text()=\"" + column + "\"]";
-		String filterComparisonValueXpath = "(//div[@class=\" x-view x-combo-list-inner x-component x-unselectable\"])//div[text()=\"" + comparison + "\"]";
-		String filterValueXpath = "(//div[@id=\"FilterRowUI\"]//input)[3]";
+		String filterComparisonValueXpath = "(//div[@class=\" x-view x-combo-list-inner x-component x-unselectable\"])//div[text()=\"" + comparison.getKey() + "\"]";
+		
         WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement element;
 
@@ -76,7 +70,7 @@ public class BaseAdmin extends BaseSite {
         clickFilterButton();
 
 		// Select a column from the dropdown based on what was passed in
-		element = driver.findElement(By.xpath(filterButtonDdXpath));
+		element = driver.findElement(By.xpath(XpathConstants.ADMIN_FILTER_COMP_DROPDOWN_BUTTON));
 		element.click();
 		Thread.sleep(1000);
 		try {
@@ -87,7 +81,7 @@ public class BaseAdmin extends BaseSite {
 		Thread.sleep(1000);
 		
 		// Select a comparison value from the dropdown based on what was passed in
-		element = driver.findElement(By.xpath(comparisonDropdownButton));
+		element = driver.findElement(By.xpath(XpathConstants.ADMIN_COMP_DROPDOWN_BUTTON));
 		element.click();
 		Thread.sleep(1000);
 		try {
@@ -98,7 +92,7 @@ public class BaseAdmin extends BaseSite {
 		element.click();
 		
 		// Input value to filter for
-		element = driver.findElement(By.xpath(filterValueXpath));
+		element = driver.findElement(By.xpath(XpathConstants.ADMIN_FILTER_VALUE_TEXTBOX));
 		element.sendKeys(value);
 
         waitForLoad();
@@ -107,8 +101,7 @@ public class BaseAdmin extends BaseSite {
 	}
 	
 	public void clearFilters() {
-		String clearFilterButtonXpath = "(//div[@id=\"mainContentTop\"]//button)[5]";
-		WebElement clearFiltersButton = driver.findElement(By.xpath(clearFilterButtonXpath));
+		WebElement clearFiltersButton = driver.findElement(By.xpath(XpathConstants.ADMIN_FILTER_CLEAR_BUTTON));
 		clearFiltersButton.click();
 		waitForLoad();
 	}
@@ -118,10 +111,7 @@ public class BaseAdmin extends BaseSite {
     }
 
     public void sort(String column, String order) throws InterruptedException {
-        String ascendingXpath = "(//div[@class=\" x-ignore x-menu x-component\"]//a)[1]";
-        String descendingXpath = "(//div[@class=\" x-ignore x-menu x-component\"]//a)[2]";
-
-        WebElement columnsRoot = driver.findElement(By.xpath(columnsRootXpath));
+        WebElement columnsRoot = driver.findElement(By.xpath(XpathConstants.ADMIN_COLUMNS_ROOT));
         List <WebElement> columns = columnsRoot.findElements(By.xpath("./td/div/span"));
 
         if(columns.size() == 0) {
@@ -130,10 +120,9 @@ public class BaseAdmin extends BaseSite {
         }
 
         int i;
-        for(i = 0; i < columns.size(); ++i) {
+        for(i = 1; i <= columns.size(); ++i) {
             String columnName = columns.get(i).getText();
             if(columnName.equals(column)) {
-                i = i + 1;
                 break;
             }
         }
@@ -141,11 +130,11 @@ public class BaseAdmin extends BaseSite {
         hoverOverColumnHeaderAndClick(i);
 
         if(order.equalsIgnoreCase("ascending")) {
-            WebElement element = driver.findElement(By.xpath(ascendingXpath));
+            WebElement element = driver.findElement(By.xpath(XpathConstants.ADMIN_SORT_ASC_BUTTON));
             element.click();
         }
         else {
-            WebElement element = driver.findElement(By.xpath(descendingXpath));
+            WebElement element = driver.findElement(By.xpath(XpathConstants.ADMIN_SORT_DESC_BUTTON));
             element.click();
         }
 
@@ -158,7 +147,6 @@ public class BaseAdmin extends BaseSite {
            and having to maintain both of them.
       */
     public void displayColumns(String[] columns) throws Exception {
-        String columnsMenuXpath = "(//div[@class=\" x-ignore x-menu x-component\"]//a)[3]";
         /*
            * Check whether column is already displayed otherwise add to the list
            * of columns that we will display
@@ -185,7 +173,7 @@ public class BaseAdmin extends BaseSite {
            * Hover over columns menu button then move to the right so the columns display
            * window doesn't disappear on us.
            */
-        WebElement columnsMenu = driver.findElement(By.xpath(columnsMenuXpath));
+        WebElement columnsMenu = driver.findElement(By.xpath(XpathConstants.ADMIN_COLUMNS_MENU));
         Actions hoverOverColumnsMenu = new Actions(driver);
         hoverOverColumnsMenu.moveToElement(columnsMenu).build().perform();
         Actions movePointerRight = new Actions(driver);
@@ -243,7 +231,7 @@ public class BaseAdmin extends BaseSite {
            * Hover over columns menu button then move to the right so the columns display
            * window doesn't disappear on us.
            */
-        WebElement columnsMenu = driver.findElement(By.xpath(columnsMenuXpath));
+        WebElement columnsMenu = driver.findElement(By.xpath(XpathConstants.ADMIN_COLUMNS_MENU));
         Actions builder = new Actions(driver);
         builder.moveToElement(columnsMenu).build().perform();
         Actions movePointerRight = new Actions(driver);
@@ -265,14 +253,12 @@ public class BaseAdmin extends BaseSite {
     }
 
     public void resetColumns() throws Exception {
-        String resetColumnsXpath = "(//div[@class=\" x-ignore x-menu x-component\"]//a)[4]";
-
         hoverOverColumnHeaderAndClick(1);
 
         /*
            * Find "Reset Columns Preferences" link and click it
            */
-        WebElement resetColumns = driver.findElement(By.xpath(resetColumnsXpath));
+        WebElement resetColumns = driver.findElement(By.xpath(XpathConstants.ADMIN_RESET_COLUMNS_BUTTON));
         resetColumns.click();
         buildColumnsMap();
         buildAllRows();
@@ -282,7 +268,7 @@ public class BaseAdmin extends BaseSite {
         /*
            * Hover over columnNumber column header
            */
-        WebElement columnsRoot = driver.findElement(By.xpath(columnsRootXpath));
+        WebElement columnsRoot = driver.findElement(By.xpath(XpathConstants.ADMIN_COLUMNS_ROOT));
         WebElement columnHeader = columnsRoot.findElement(By.xpath("./td[" + columnNumber + "]/div"));
         scrollToElement(columnHeader);
         Actions builder = new Actions(driver);
@@ -294,24 +280,21 @@ public class BaseAdmin extends BaseSite {
         WebElement dropdownButton = columnsRoot.findElement(By.xpath("./td[" + columnNumber + "]/div/a"));
         dropdownButton.click();
         WebDriverWait waitForColumnsLink = new WebDriverWait(driver, 5);
-        waitForColumnsLink.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(columnsMenuXpath)));
+        waitForColumnsLink.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(XpathConstants.ADMIN_COLUMNS_MENU)));
     }
 
 	public void clickEditButton() {
-		String editButtonXpath = "(//button[@type=\"button\"])[11]";
-		WebElement element = driver.findElement(By.xpath(editButtonXpath));
+		WebElement element = driver.findElement(By.xpath(XpathConstants.ADMIN_EDIT_BUTTON));
 		element.click();
 	}
 	
 	public void clickCancelButton() {
-		String cancelButtonXpath = "(//button[@type=\"button\"])[12]";
-		WebElement element = driver.findElement(By.xpath(cancelButtonXpath));
+		WebElement element = driver.findElement(By.xpath(XpathConstants.ADMIN_CANCEL_BUTTON));
 		element.click();
 	}
 
     public void clickDeleteButton() throws InterruptedException {
-        String deleteButtonXpath = "(//div[@id=\"mainContentTop\"]//button)[2]";
-        WebElement deleteButton = driver.findElement(By.xpath(deleteButtonXpath));
+        WebElement deleteButton = driver.findElement(By.xpath(XpathConstants.ADMIN_DELETE_BUTTON));
 
         if( deleteButton.getAttribute("aria-disabled").equals("true")) {
             System.out.println("Delete button is disabled, active alarms? children objects?");
@@ -324,14 +307,13 @@ public class BaseAdmin extends BaseSite {
     }
 
 	public void clickCopyButton() throws Exception{
-		String copyButtonXpath = "//*[@id=\"copy\"]/tbody/tr[2]/td[2]/em/button";
-		WebElement copyButton = driver.findElement(By.xpath(copyButtonXpath));
+		WebElement copyButton = driver.findElement(By.xpath(XpathConstants.ADMIN_COPY_BUTTON));
 		copyButton.click();
 		waitForApplyButton();
 	}
 
     public int getNumberOfPages() {
-        WebElement bottomPanelItems = driver.findElement(By.xpath(bottomPanelRootXpath));
+//        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
 
         WebElement numberOfPagesLabel = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-left\"]/table/tbody/tr/td[6]"));
         String ofPagesLabel = numberOfPagesLabel.getText();
@@ -341,7 +323,7 @@ public class BaseAdmin extends BaseSite {
     }
 
     public void pageForward() {
-        WebElement bottomPanelItems = driver.findElement(By.xpath(bottomPanelRootXpath));
+//        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
         WebElement pageForwardButton = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-left\"]/table/tbody/tr/td[8]/button"));
 
         if(pageForwardButton.getAttribute("aria-disabled").equals("true")) {
@@ -355,7 +337,7 @@ public class BaseAdmin extends BaseSite {
     }
 
     public void pageBack() {
-        WebElement bottomPanelItems = driver.findElement(By.xpath(bottomPanelRootXpath));
+//        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
         WebElement pageBackButton = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-left\"]/table/tbody/tr/td[2]/button"));
 
         if(pageBackButton.getAttribute("aria-disabled").equals("true")) {
@@ -369,7 +351,7 @@ public class BaseAdmin extends BaseSite {
     }
 
     public int getNumberOfItems() {
-        WebElement bottomPanelItems = driver.findElement(By.xpath(bottomPanelRootXpath));
+//        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
         WebElement displayingLabel = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-right\"/table/tbody/tr/td/table/tbody/tr/td[5]/div"));
 
         String displayText = displayingLabel.getText();
@@ -379,7 +361,7 @@ public class BaseAdmin extends BaseSite {
     }
 
     public int getResultsPerPage() {
-        WebElement bottomPanelItems = driver.findElement(By.xpath(bottomPanelRootXpath));
+//        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
         WebElement resultsPerPageInputBox = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-right\"/table/tbody/tr/td/table/tbody/tr/td[1]/div/input"));
 
         String currentResultsPerPage = resultsPerPageInputBox.getText();
@@ -392,7 +374,7 @@ public class BaseAdmin extends BaseSite {
         but we should ask development to add an ID to the dropdown with the options for results per page.
          */
         String resultsPerPageOptionsXpath = "//div[starts-with(@class,\"x-combo-list\") and starts-with(@style,\"border-width\")]/div/div[text()=\"" + resultsPerPage + "\"]";
-        WebElement bottomPanelItems = driver.findElement(By.xpath(bottomPanelRootXpath));
+//        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
         WebElement resultsPerPageDropDown = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-right\"/table/tbody/tr/td/table/tbody/tr/td[1]/div/img"));
 
         resultsPerPageDropDown.click();
@@ -405,9 +387,8 @@ public class BaseAdmin extends BaseSite {
     protected void buildColumnsMap(){
         allColumnHeaders = new HashMap<String,Integer>();
         positionToColumnName = new ArrayList<String>();
-        String columnHeadersRootXpath = "//tr[@class=\"x-grid3-hd-row\"]";
 
-        WebElement columnsRoot = driver.findElement(By.xpath(columnHeadersRootXpath));
+        WebElement columnsRoot = driver.findElement(By.xpath(XpathConstants.ADMIN_COLUMNS_HEADER_ROOT));
         List <WebElement> columnNames = columnsRoot.findElements(By.xpath("./td"));
 
         for(int i = 0; i < columnNames.size(); ++i){
@@ -418,10 +399,9 @@ public class BaseAdmin extends BaseSite {
     }
 
     protected void buildAllRows(){
-        String gridRootXpath = "//div[@class=\"x-grid3-body\"]";
         allRows = new ArrayList<HashMap<String, String>>();
 
-        gridRoot = driver.findElement(By.xpath(gridRootXpath));
+        gridRoot = driver.findElement(By.xpath(XpathConstants.ADMIN_GRID_ROOT));
         List <WebElement> rows = gridRoot.findElements(By.xpath("./div"));
 
         for(int i = 0; i < rows.size(); ++i){
@@ -472,7 +452,7 @@ public class BaseAdmin extends BaseSite {
 
     private void waitForApplyButton() {
         WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(adminApplyButtonXpath)));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(XpathConstants.ADMIN_APPLY_BUTTON)));
     }
 
     protected void waitForLoad() {
@@ -503,14 +483,12 @@ public class BaseAdmin extends BaseSite {
     }
 
     public void clickGeneralTab() {
-        String generalTabXpath = "//li[@id=\"detailsTabPanel__tabItemGeneral\"]//span[text()=\"General\"]";
-        WebElement generalTab = driver.findElement(By.xpath(generalTabXpath));
+        WebElement generalTab = driver.findElement(By.xpath(XpathConstants.ADMIN_DETAILS_GENERAL_TAB));
         generalTab.click();
     }
 
     public void clickReferencesTab() {
-        String referencesTabXpath = "//li[@id=\"detailsTabPanel__tabItemReferences\"]//span[text()=\"References\"]";
-        WebElement referencesTab = driver.findElement(By.xpath(referencesTabXpath));
+        WebElement referencesTab = driver.findElement(By.xpath(XpathConstants.ADMIN_DETAILS_REFS_TAB));
         referencesTab.click();
     }
 
