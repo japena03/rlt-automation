@@ -28,9 +28,9 @@ public class CentersPageRegression {
 
         // To test local comment out RemoteWebDriver line and uncomment FirefoxDriver and System.setProperty lines
         // node does not need to be running in order to test locally
-        driver = new RemoteWebDriver(new URL(hubUrl), capability);
-//        System.setProperty("webdriver.gecko.driver", "D:\\Git\\rlt-automation\\config\\geckodriver.exe");
-//        driver = new FirefoxDriver();
+//        driver = new RemoteWebDriver(new URL(hubUrl), capability);
+        System.setProperty("webdriver.gecko.driver", "D:\\Git\\rlt-automation\\config\\geckodriver.exe");
+        driver = new FirefoxDriver();
         
         driver.manage().window().maximize();
         
@@ -44,7 +44,7 @@ public class CentersPageRegression {
     
     @AfterMethod
     public void afterTest() {
-    	driver.quit();
+//    	driver.quit();
     }
 
     @Test
@@ -76,6 +76,12 @@ public class CentersPageRegression {
         Assert.assertEquals(allRows.get(0).get("Name"),"zz-parent");
 
         //TODO continue with other fields
+    }
+    
+    @Test
+    public void filterFields() throws Exception {
+    	int rows = cp.createFilter("Name", Comparison.EQUAL_TO, "system");
+    	Assert.assertEquals(1, rows);
     }
 
     private void newCenter(String name, String coverage, String parent) throws Exception {

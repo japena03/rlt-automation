@@ -15,13 +15,13 @@ public class BaseAdmin extends BaseSite {
     private ArrayList<String> positionToColumnName;
     private ArrayList<HashMap<String, String>> allRows;
     private WebElement gridRoot;
-    private WebElement bottomPanelItems;
+//    private WebElement bottomPanelItems;
 
     BaseAdmin(WebDriver driver){
         super(driver);
         this.driver = driver; //TODO Why am i setting it here and passing it up to the parent class? Driver in parent should be public
         
-        bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
+//        bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT)); //TODO this will only work if we're already at the admin page, will need a different work around
     }
 
 	public void clickRefreshButton() {
@@ -59,6 +59,7 @@ public class BaseAdmin extends BaseSite {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(XpathConstants.ADMIN_FILTER_COMP_DROPDOWN_BUTTON)));
     }
 	
+    //TODO column parameter should be in a constants class or enum 
 	public int createFilter(String column, Comparison comparison, String value) throws Exception {
 		String filterColumnValueXpath = "(//div[@class=\" x-view x-combo-list-inner x-component x-unselectable\"])//div[text()=\"" + column + "\"]";
 		String filterComparisonValueXpath = "(//div[@class=\" x-view x-combo-list-inner x-component x-unselectable\"])//div[text()=\"" + comparison.getKey() + "\"]";
@@ -313,7 +314,7 @@ public class BaseAdmin extends BaseSite {
 	}
 
     public int getNumberOfPages() {
-//        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
+        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
 
         WebElement numberOfPagesLabel = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-left\"]/table/tbody/tr/td[6]"));
         String ofPagesLabel = numberOfPagesLabel.getText();
@@ -323,7 +324,7 @@ public class BaseAdmin extends BaseSite {
     }
 
     public void pageForward() {
-//        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
+        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
         WebElement pageForwardButton = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-left\"]/table/tbody/tr/td[8]/button"));
 
         if(pageForwardButton.getAttribute("aria-disabled").equals("true")) {
@@ -337,7 +338,7 @@ public class BaseAdmin extends BaseSite {
     }
 
     public void pageBack() {
-//        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
+        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
         WebElement pageBackButton = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-left\"]/table/tbody/tr/td[2]/button"));
 
         if(pageBackButton.getAttribute("aria-disabled").equals("true")) {
@@ -351,8 +352,8 @@ public class BaseAdmin extends BaseSite {
     }
 
     public int getNumberOfItems() {
-//        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
-        WebElement displayingLabel = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-right\"/table/tbody/tr/td/table/tbody/tr/td[5]/div"));
+        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
+        WebElement displayingLabel = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-right\"]/table/tbody/tr/td/table/tbody/tr/td[5]/div"));
 
         String displayText = displayingLabel.getText();
         displayText = displayText.substring(displayText.length() - 1);
@@ -361,8 +362,8 @@ public class BaseAdmin extends BaseSite {
     }
 
     public int getResultsPerPage() {
-//        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
-        WebElement resultsPerPageInputBox = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-right\"/table/tbody/tr/td/table/tbody/tr/td[1]/div/input"));
+        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
+        WebElement resultsPerPageInputBox = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-right\"]/table/tbody/tr/td/table/tbody/tr/td[1]/div/input"));
 
         String currentResultsPerPage = resultsPerPageInputBox.getText();
         return Integer.parseInt(currentResultsPerPage);
@@ -374,8 +375,8 @@ public class BaseAdmin extends BaseSite {
         but we should ask development to add an ID to the dropdown with the options for results per page.
          */
         String resultsPerPageOptionsXpath = "//div[starts-with(@class,\"x-combo-list\") and starts-with(@style,\"border-width\")]/div/div[text()=\"" + resultsPerPage + "\"]";
-//        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
-        WebElement resultsPerPageDropDown = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-right\"/table/tbody/tr/td/table/tbody/tr/td[1]/div/img"));
+        WebElement bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT));
+        WebElement resultsPerPageDropDown = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-right\"]/table/tbody/tr/td/table/tbody/tr/td[1]/div/img"));
 
         resultsPerPageDropDown.click();
         WebElement desiredResultsPerPage = driver.findElement(By.xpath(resultsPerPageOptionsXpath));
