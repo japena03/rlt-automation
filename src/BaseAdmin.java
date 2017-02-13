@@ -11,7 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BaseAdmin extends BaseSite {
 	protected WebDriver driver;
-	private String refreshButtonXpath = "((//div[@id=\"gridPager\"])//button[@type=\"button\"])[5]";
 	private String adminApplyButtonXpath = "((//div[@class=\"x-panel-footer\"])//button)[3]";
     private String columnsRootXpath = "/html/body/div[@id=\"bodyContentOuter\"]/div/div[@id=\"main\"]/div[@id=\"mainContent\"]/div[@id=\"mainContentGridPanel\"]//div[@id=\"grid\"]//div[@class=\"x-grid3-header\"]//table/tbody/tr";
     private String filterButtonDdXpath = "(//div[@id=\"x-menu-el-FilterRowUI\"]//img)[1]";
@@ -28,7 +27,7 @@ public class BaseAdmin extends BaseSite {
     }
 
 	public void clickRefreshButton() {
-		WebElement refreshButton = driver.findElement(By.xpath(refreshButtonXpath));
+		WebElement refreshButton = driver.findElement(By.xpath(XpathConstants.ADMIN_REFRESH_BUTTON));
         if(refreshButton.getAttribute("aria-disabled").equals("false")) {
             refreshButton.click();
             waitForLoad();
@@ -212,7 +211,7 @@ public class BaseAdmin extends BaseSite {
         /*
         * Click away to make somewhere
         */
-        WebElement logo = driver.findElement(By.xpath(TONE_LOGO_XPATH));
+        WebElement logo = driver.findElement(By.xpath(XpathConstants.TONE_LOGO));
         logo.click();
         Thread.sleep(250);
     }
@@ -479,7 +478,7 @@ public class BaseAdmin extends BaseSite {
     protected void waitForLoad() {
         ExpectedCondition<Boolean> condition = new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
-                return driver.findElement(By.xpath(refreshButtonXpath))
+                return driver.findElement(By.xpath(XpathConstants.ADMIN_REFRESH_BUTTON))
                         .getAttribute("aria-disabled").equals("false");
             }
         };

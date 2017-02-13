@@ -10,8 +10,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BaseSite {
 	private WebDriver driver;
-    private String generalAdminLinkXpath = "//span[@id=\"adminMenu\"]/a[1]";
-    public static final String TONE_LOGO_XPATH = "/html/body/div[@id=\"topNavDiv\"]/div[@id=\"titleOuter\"]/img[@id=\"topNavLogo\"]";
 
     public BaseSite(WebDriver driver){
         this.driver = driver;
@@ -23,12 +21,12 @@ public class BaseSite {
         administrationDropdown.click();
 
         WebDriverWait waitForLinks = new WebDriverWait(driver,5);
-        waitForLinks.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(generalAdminLinkXpath)));
+        waitForLinks.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(XpathConstants.GENERAL_ADMIN_LINK)));
     }
 
 	public void goToGeneralAdmin() throws InterruptedException {
         clickOnAdministrationLink();
-        WebElement generalAdminLink = driver.findElement(By.xpath(generalAdminLinkXpath));
+        WebElement generalAdminLink = driver.findElement(By.xpath(XpathConstants.GENERAL_ADMIN_LINK));
         generalAdminLink.click();
 
         //TODO: Introduce a wait before returning control, the sleep is just a temporary solution
