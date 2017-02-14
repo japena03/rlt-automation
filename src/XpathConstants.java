@@ -47,4 +47,6 @@ public class XpathConstants {
     public static String CENTERS_REFS_PQOS_COLLECTORS_BUTTON = "//div[@id=\"tabItemReferences\"]//button[contains(text(),\"Passive\")]";
     public static String CENTERS_REFS_AVAYA_CDR_COLLECTORS_BUTTON = "//div[@id=\"tabItemReferences\"]//button[contains(text(),\"Avaya\")]";
     public static String CENTERS_REFS_LINKS_BUTTON = "//div[@id=\"tabItemReferences\"]//button[contains(text(),\"Links\")]";
+    public static String CENTERS_PARENT_CENTER_DROPDOWN_BUTTON = "((//div[starts-with(@role, \"combobox\")])//img)[2]";
+    public static String CENTERS_COVERAGE_DROPDOWN_BUTTON = "((//div[starts-with(@role, \"combobox\")])//img)[3]";
 }

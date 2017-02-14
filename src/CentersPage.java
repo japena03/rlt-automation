@@ -20,9 +20,8 @@ public class CentersPage extends BaseAdmin {
 
     public void setParentCenter(String parentCenter) throws Exception {
         String parentCenterCombolistXpath = "//div[starts-with(@class,\"x-combo-list\") and text()=\"" + parentCenter + "\"]";
-        String parentCenterDropdownButton = "((//div[starts-with(@role, \"combobox\")])//img)[2]";
         
-        WebElement dropdownbutton = driver.findElement(By.xpath(parentCenterDropdownButton));
+        WebElement dropdownbutton = driver.findElement(By.xpath(XpathConstants.CENTERS_PARENT_CENTER_DROPDOWN_BUTTON));
         dropdownbutton.click();
 		
         WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -34,9 +33,8 @@ public class CentersPage extends BaseAdmin {
 
     public void setCoverage(String coverage) throws InterruptedException {
         String coverageCombolistXpath = "//div[starts-with(@class,\"x-combo-list\") and text()=\"" + coverage + "\"]";
-        String coverageDropdownButton = "((//div[starts-with(@role, \"combobox\")])//img)[3]";
         
-        WebElement dropdownbutton = driver.findElement(By.xpath(coverageDropdownButton));
+        WebElement dropdownbutton = driver.findElement(By.xpath(XpathConstants.CENTERS_COVERAGE_DROPDOWN_BUTTON));
         dropdownbutton.click();
         
         WebDriverWait wait = new WebDriverWait(driver, 5);

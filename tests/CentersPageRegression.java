@@ -4,7 +4,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
@@ -21,16 +20,16 @@ public class CentersPageRegression {
     private CentersPage cp;
     ArrayList<HashMap<String, String>> allRows;
 
-    @BeforeMethod
+    @BeforeTest
     public void setup() throws Exception {
         String hubUrl = "http://192.168.86.100:5555/wd/hub";
         capability = DesiredCapabilities.firefox();
 
         // To test local comment out RemoteWebDriver line and uncomment FirefoxDriver and System.setProperty lines
         // node does not need to be running in order to test locally
-//        driver = new RemoteWebDriver(new URL(hubUrl), capability);
-        System.setProperty("webdriver.gecko.driver", "D:\\Git\\rlt-automation\\config\\geckodriver.exe");
-        driver = new FirefoxDriver();
+        driver = new RemoteWebDriver(new URL(hubUrl), capability);
+//        System.setProperty("webdriver.gecko.driver", "D:\\Git\\rlt-automation\\config\\geckodriver.exe");
+//        driver = new FirefoxDriver();
         
         driver.manage().window().maximize();
         
@@ -42,9 +41,14 @@ public class CentersPageRegression {
         cp.clickCentersLink();
     }
     
-    @AfterMethod
+    @BeforeMethod
+    public void beforeEachTest() {
+    	driver.navigate().refresh();
+    }
+    
+    @AfterTest
     public void afterTest() {
-//    	driver.quit();
+    	driver.quit();
     }
 
     @Test
