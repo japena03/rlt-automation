@@ -6,34 +6,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CentersPage extends BaseAdmin {
 
-    String nameFieldXpath = "//div[@id=\"detailsTabPanel\"]//td[text()=\"Name: \"]/..//input";
-    String parentCenterFieldXpath = "//div[@id=\"detailsTabPanel\"]//td[text()=\"Parent Center: \"]/..//input";
-    String coverageFieldXpath = "//div[@id=\"detailsTabPanel\"]//td[text()=\"Coverage: \"]/..//input";
-    String centersReferencedXpath = "//div[@id=\"tabItemReferences\"]//button[contains(text(),\"Centers\")]";
-    String entitiesReferencedXpath = "//div[@id=\"tabItemReferences\"]//button[contains(text(),\"Entities\")]";
-    String rtcpCollectorsReferencedXpath = "//div[@id=\"tabItemReferences\"]//button[contains(text(),\"RTCP\")]";
-    String pqosCollectorsReferencedXpath = "//div[@id=\"tabItemReferences\"]//button[contains(text(),\"Passive\")]";
-    String avayaCdrCollectorsReferencedXpath = "//div[@id=\"tabItemReferences\"]//button[contains(text(),\"Avaya\")]";
-    String linksReferencedXpath = "//div[@id=\"tabItemReferences\"]//button[contains(text(),\"Links\")]";
-
     public CentersPage (WebDriver driver) {
         super(driver);
-        this.driver = driver;
-    }
-
-    public void clickCentersLink() {
-        String centersXpath = "((//div[@class=\"x-tree3-node-ct\"])[1])/*[1]";
-
-        WebElement centersLink = driver.findElement(By.xpath(centersXpath));
-        centersLink.click();
-        waitForLoad();
-
-        buildColumnsMap();
-        buildAllRows();
     }
 
     public void setName(String name) {
-        WebElement nameField = driver.findElement(By.xpath(nameFieldXpath));
+        WebElement nameField = driver.findElement(By.xpath(XpathConstants.CENTERS_NAME_FIELD));
         if(isFieldReadonly(nameField)) {
             throw new RuntimeException("Field is not editable");
         }
@@ -69,12 +47,12 @@ public class CentersPage extends BaseAdmin {
     }
 
     public void clickReferencedCenters() {
-        WebElement referencedCenters = driver.findElement(By.xpath(centersReferencedXpath));
+        WebElement referencedCenters = driver.findElement(By.xpath(XpathConstants.CENTERS_REFS_CENTER_CHILDREN_BUTTON));
         referencedCenters.click();
     }
 
     public int getNumberOfReferencedCenters() {
-        WebElement referencedCenters = driver.findElement(By.xpath(centersReferencedXpath));
+        WebElement referencedCenters = driver.findElement(By.xpath(XpathConstants.CENTERS_REFS_CENTER_CHILDREN_BUTTON));
         String numberOfReferencedCenters = referencedCenters.getText();
         int i = numberOfReferencedCenters.indexOf(' ');
         numberOfReferencedCenters = numberOfReferencedCenters.substring(0, i);
@@ -83,12 +61,12 @@ public class CentersPage extends BaseAdmin {
     }
 
     public void clickReferencedEntities() {
-        WebElement referencedEntities = driver.findElement(By.xpath(entitiesReferencedXpath));
+        WebElement referencedEntities = driver.findElement(By.xpath(XpathConstants.CENTERS_REFS_ENTITIES_BUTTON));
         referencedEntities.click();
     }
 
     public int getNumberOfReferencedEntities() {
-        WebElement referencedEntities = driver.findElement(By.xpath(entitiesReferencedXpath));
+        WebElement referencedEntities = driver.findElement(By.xpath(XpathConstants.CENTERS_REFS_ENTITIES_BUTTON));
         String numberOfReferencedEntities = referencedEntities.getText();
         int i = numberOfReferencedEntities.indexOf(' ');
         numberOfReferencedEntities = numberOfReferencedEntities.substring(0, i);
@@ -97,12 +75,12 @@ public class CentersPage extends BaseAdmin {
     }
 
     public void clickReferencedRtcpCollectors() {
-        WebElement referencedRtcpCollectors = driver.findElement(By.xpath(rtcpCollectorsReferencedXpath));
+        WebElement referencedRtcpCollectors = driver.findElement(By.xpath(XpathConstants.CENTERS_REFS_RTCP_COLLECTORS_BUTTON));
         referencedRtcpCollectors.click();
     }
 
     public int getNumberOfReferencedRtcpCollectors() {
-        WebElement referencedRtcp = driver.findElement(By.xpath(rtcpCollectorsReferencedXpath));
+        WebElement referencedRtcp = driver.findElement(By.xpath(XpathConstants.CENTERS_REFS_RTCP_COLLECTORS_BUTTON));
         String numberOfReferencedRtcp = referencedRtcp.getText();
         int i = numberOfReferencedRtcp.indexOf(' ');
         numberOfReferencedRtcp = numberOfReferencedRtcp.substring(0, i);
@@ -111,12 +89,12 @@ public class CentersPage extends BaseAdmin {
     }
 
     public void clickReferencedPqosCollectors() {
-        WebElement referencedPqosCollectors = driver.findElement(By.xpath(pqosCollectorsReferencedXpath));
+        WebElement referencedPqosCollectors = driver.findElement(By.xpath(XpathConstants.CENTERS_REFS_PQOS_COLLECTORS_BUTTON));
         referencedPqosCollectors.click();
     }
 
     public int getNumberOfReferencedPqosCollectors() {
-        WebElement referencedPqos = driver.findElement(By.xpath(rtcpCollectorsReferencedXpath));
+        WebElement referencedPqos = driver.findElement(By.xpath(XpathConstants.CENTERS_REFS_PQOS_COLLECTORS_BUTTON));
         String numberOfReferencedPqos = referencedPqos.getText();
         int i = numberOfReferencedPqos.indexOf(' ');
         numberOfReferencedPqos = numberOfReferencedPqos.substring(0, i);
@@ -125,12 +103,12 @@ public class CentersPage extends BaseAdmin {
     }
 
     public void clickReferencedAvayaCdrCollectors() {
-        WebElement referencedAvayaCdrCollectors = driver.findElement(By.xpath(avayaCdrCollectorsReferencedXpath));
+        WebElement referencedAvayaCdrCollectors = driver.findElement(By.xpath(XpathConstants.CENTERS_REFS_AVAYA_CDR_COLLECTORS_BUTTON));
         referencedAvayaCdrCollectors.click();
     }
 
     public int getNumberOfReferencedAvayaCdrCollectors() {
-        WebElement referencedAvayaCdr = driver.findElement(By.xpath(avayaCdrCollectorsReferencedXpath));
+        WebElement referencedAvayaCdr = driver.findElement(By.xpath(XpathConstants.CENTERS_REFS_AVAYA_CDR_COLLECTORS_BUTTON));
         String numberOfReferencedAvayaCdr = referencedAvayaCdr.getText();
         int i = numberOfReferencedAvayaCdr.indexOf(' ');
         numberOfReferencedAvayaCdr = numberOfReferencedAvayaCdr.substring(0, i);
@@ -139,12 +117,12 @@ public class CentersPage extends BaseAdmin {
     }
 
     public void clickReferencedLinks() {
-        WebElement referencedLinks = driver.findElement(By.xpath(linksReferencedXpath));
+        WebElement referencedLinks = driver.findElement(By.xpath(XpathConstants.CENTERS_REFS_LINKS_BUTTON));
         referencedLinks.click();
     }
 
     public int getNumberOfReferencedLinks() {
-        WebElement referencedLinks = driver.findElement(By.xpath(linksReferencedXpath));
+        WebElement referencedLinks = driver.findElement(By.xpath(XpathConstants.CENTERS_REFS_LINKS_BUTTON));
         String numberOfReferencedLinks = referencedLinks.getText();
         int i = numberOfReferencedLinks.indexOf(' ');
         numberOfReferencedLinks = numberOfReferencedLinks.substring(0, i);

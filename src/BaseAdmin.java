@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BaseAdmin extends BaseSite {
-	protected WebDriver driver;
     private HashMap<String,Integer> allColumnHeaders;
     private ArrayList<String> positionToColumnName;
     private ArrayList<HashMap<String, String>> allRows;
@@ -19,8 +18,6 @@ public class BaseAdmin extends BaseSite {
 
     BaseAdmin(WebDriver driver){
         super(driver);
-        this.driver = driver; //TODO Why am i setting it here and passing it up to the parent class? Driver in parent should be public
-        
 //        bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT)); //TODO this will only work if we're already at the admin page, will need a different work around
     }
 
@@ -56,7 +53,7 @@ public class BaseAdmin extends BaseSite {
 
         Thread.sleep(500);
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(XpathConstants.ADMIN_FILTER_COMP_DROPDOWN_BUTTON)));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(XpathConstants.ADMIN_FILTER_COLOUMN_DROPDOWN_BUTTON)));
     }
 	
     //TODO column parameter should be in a constants class or enum 
@@ -71,7 +68,7 @@ public class BaseAdmin extends BaseSite {
         clickFilterButton();
 
 		// Select a column from the dropdown based on what was passed in
-		element = driver.findElement(By.xpath(XpathConstants.ADMIN_FILTER_COMP_DROPDOWN_BUTTON));
+		element = driver.findElement(By.xpath(XpathConstants.ADMIN_FILTER_COLOUMN_DROPDOWN_BUTTON));
 		element.click();
 		Thread.sleep(1000);
 		try {
@@ -82,7 +79,7 @@ public class BaseAdmin extends BaseSite {
 		Thread.sleep(1000);
 		
 		// Select a comparison value from the dropdown based on what was passed in
-		element = driver.findElement(By.xpath(XpathConstants.ADMIN_COMP_DROPDOWN_BUTTON));
+		element = driver.findElement(By.xpath(XpathConstants.ADMIN_FILTER_COMP_DROPDOWN_BUTTON));
 		element.click();
 		Thread.sleep(1000);
 		try {
@@ -508,5 +505,16 @@ public class BaseAdmin extends BaseSite {
         if(requiredField != null) {
             throw new RuntimeException("Required fields were left blank!");
         }
+    }
+    
+    public void clickCentersLink() {
+        String centersXpath = "((//div[@class=\"x-tree3-node-ct\"])[1])/*[1]";
+
+        WebElement centersLink = driver.findElement(By.xpath(centersXpath));
+        centersLink.click();
+        waitForLoad();
+
+        buildColumnsMap();
+        buildAllRows();
     }
 }

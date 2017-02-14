@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
      */
 
 public class BaseSite {
-	private WebDriver driver;
+	public WebDriver driver;
 
     public BaseSite(WebDriver driver){
         this.driver = driver;
