@@ -42,8 +42,11 @@ public class CentersPageRegression {
     }
     
     @BeforeMethod
-    public void beforeEachTest() {
+    public void beforeEachTest() throws InterruptedException {
     	driver.navigate().refresh();
+    	
+    	//TODO Very bad idea to explicitly wait 3 seconds in between test, i need to use a webdriverwait call here
+    	Thread.sleep(3000L);
     }
     
     @AfterTest
