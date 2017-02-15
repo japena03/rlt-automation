@@ -1,58 +1,20 @@
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CentersPageRegression {
-    private LoginPage lp;
-    private DesiredCapabilities capability;
-    private WebDriver driver;
+public class CentersPageRegression extends BaseTest {
     private CentersPage cp;
-    ArrayList<HashMap<String, String>> allRows;
-
-    @BeforeTest
-    public void setup() throws Exception {
-        String hubUrl = "http://192.168.86.100:5555/wd/hub";
-        capability = DesiredCapabilities.firefox();
-
-        // To test local comment out RemoteWebDriver line and uncomment FirefoxDriver and System.setProperty lines
-        // node does not need to be running in order to test locally
-        driver = new RemoteWebDriver(new URL(hubUrl), capability);
-//        System.setProperty("webdriver.gecko.driver", "D:\\Git\\rlt-automation\\config\\geckodriver.exe");
-//        driver = new FirefoxDriver();
-        
-        driver.manage().window().maximize();
-        
-        lp = new LoginPage(driver);
-        cp = new CentersPage(driver);
-
-        lp.login("localhost","sadm","ems");
-        cp.goToGeneralAdmin();
-        cp.clickCentersLink();
-    }
+    private ArrayList<HashMap<String, String>> allRows;
     
-    @BeforeMethod
-    public void beforeEachTest() throws InterruptedException {
-    	driver.navigate().refresh();
-    	
-    	//TODO Very bad idea to explicitly wait 3 seconds in between test, i need to use a webdriverwait call here
-    	Thread.sleep(3000L);
-    }
-    
-    @AfterTest
-    public void afterTest() {
-    	driver.quit();
-    }
+	@Override
+	public void doSpecificSetup() throws Exception {
+		cp = new CentersPage(driver);
+		cp.goToGeneralAdmin();
+		cp.clickCentersLink();
+	}
 
     @Test
     public void newCenter() throws InterruptedException {
