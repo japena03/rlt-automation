@@ -1,4 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Centers Page Regression Tests" verbose="5">
+        <listeners>
+		<listener class-name="ExtentReportNG" />
+	</listeners>
 	<test name="Create Centers, sort, and filter" preserve-order="true">
   		<classes>
    			<class name="CentersPageRegression">	
