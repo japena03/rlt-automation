@@ -1,0 +1,1 @@
+java -Dwebdriver.gecko.driver="D:\Git\rlt-automation\config\geckodriver.exe" -jar D:\Git\rlt-automation\lib\selenium\3.0.1\selenium-server-standalone-3.0.1.jar -role node -nodeConfig config\nodeConfig.json -host 192.168.86.100
