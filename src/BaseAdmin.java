@@ -94,8 +94,12 @@ public class BaseAdmin extends BaseSite {
 		element.sendKeys(value);
 
         waitForLoad();
-        int rows = getNumberOfItems();
-        return rows;
+        
+        // Wait for "displaying 1 of x" label to update
+        // TODO We should not have to wait 1 second plus this is potentially bad when it takes longer than 1 second for it to load, a webdriverwait condition should be used
+        Thread.sleep(1000L);
+        
+        return getNumberOfItems();
 	}
 	
 	public void clearFilters() {

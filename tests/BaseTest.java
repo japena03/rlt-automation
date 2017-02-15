@@ -18,9 +18,9 @@ public abstract class BaseTest {
 
         // To test local comment out RemoteWebDriver line and uncomment FirefoxDriver and System.setProperty lines
         // node does not need to be running in order to test locally
-//        driver = new RemoteWebDriver(new URL(hubUrl), capability);
-        System.setProperty("webdriver.gecko.driver", "D:\\Git\\rlt-automation\\config\\geckodriver.exe");
-        driver = new FirefoxDriver();
+        driver = new RemoteWebDriver(new URL(hubUrl), capability);
+//        System.setProperty("webdriver.gecko.driver", "D:\\Git\\rlt-automation\\config\\geckodriver.exe");
+//        driver = new FirefoxDriver();
         
         driver.manage().window().maximize();
         

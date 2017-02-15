@@ -50,7 +50,7 @@ public class CentersPageRegression extends BaseTest {
     @Test
     public void filterFields() throws Exception {
     	int rows = cp.createFilter("Name", Comparison.EQUAL_TO, "system");
-    	Assert.assertEquals(1, rows);
+    	Assert.assertEquals(rows, 1);
     }
 
     private void newCenter(String name, String coverage, String parent) throws Exception {
