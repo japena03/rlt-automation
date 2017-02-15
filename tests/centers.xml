@@ -1,0 +1,17 @@
+<suite name="Centers Page Regression Tests" verbose="5">
+	<test name="Create Centers, sort, and filter" preserve-order="true">
+  		<classes>
+   			<class name="CentersPageRegression">	
+				<methods>
+					<include name="setup" />
+
+					<include name="newCenter" />
+					<!-- // Bug in selenium, refer to https://github.com/SeleniumHQ/selenium/issues/2285 -->
+					<!-- can't enable sortEveryField until selenium bug is fixed-->
+					<!--<include name="sortEveryField" />-->
+					<include name="filterFields" />
+				</methods>
+			</class>
+ 	 	</classes>
+ 	</test>
+</suite> 
