@@ -9,14 +9,12 @@ import org.testng.annotations.BeforeClass;
 
 public abstract class BaseTest {
 	
-	private LoginPage lp;
-    private DesiredCapabilities capability;
     protected WebDriver driver;
 
     @BeforeClass
     public void init() throws Exception {
         String hubUrl = "http://192.168.86.100:5555/wd/hub";
-        capability = DesiredCapabilities.firefox();
+        DesiredCapabilities capability = DesiredCapabilities.firefox();
 
         // To test local comment out RemoteWebDriver line and uncomment FirefoxDriver and System.setProperty lines
         // node does not need to be running in order to test locally
@@ -26,12 +24,8 @@ public abstract class BaseTest {
         
         driver.manage().window().maximize();
         
-        lp = new LoginPage(driver);
-//        cp = new CentersPage(driver);
-
+        LoginPage lp = new LoginPage(driver);
         lp.login("localhost","sadm","ems");
-//        cp.goToGeneralAdmin();
-//        cp.clickCentersLink();
         
         doSpecificSetup();
     }
