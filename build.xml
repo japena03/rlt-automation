@@ -12,6 +12,8 @@
 			<pathelement path="${basedir}/"/>
 			<fileset dir="${lib.dir}" includes="testng/6.10/*.jar"/>
 			<fileset dir="${lib.dir}" includes="selenium/3.0.1/*.jar"/>
+			<fileset dir="${lib.dir}" includes="extentreports/3.0.2/*.jar"/>
+			<fileset dir="${lib.dir}" includes="extentreports/3.0.2/lib/*.jar"/>
 		</path>
 		<!-- 
 		  Convert jar collection from a given reference into one list, storing
@@ -62,6 +64,15 @@
                 -->
                 <testng classpath="${test.classpath}:${build.dir}">
                         <xmlfileset dir="${tests.dir}" includes="loginTest.xml"/>
+                </testng>
+        </target>
+        <target name="centers" depends="compile">
+                <!--
+                  TestNG classpath has been provided reference of jar files and compiled classes,
+                  this will generate report NG report
+                -->
+                <testng classpath="${test.classpath}:${build.dir}">
+                        <xmlfileset dir="${tests.dir}" includes="centers.xml"/>
                 </testng>
         </target>
 </project>
