@@ -1,6 +1,9 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginPage {
 
@@ -21,7 +24,13 @@ public class LoginPage {
         element.sendKeys(password);
         
         element.submit();
-        // TODO: Don't use sleep method, use webdriverwait
-        Thread.sleep(5000);
+        
+        try {
+			WebDriverWait wait = new WebDriverWait(driver, 5);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@id=\"monitorAlarmsHref\"]")));
+		}
+		catch(TimeoutException e) {
+			throw new IllegalStateException("Failed to login");
+		}
 	}
 }
