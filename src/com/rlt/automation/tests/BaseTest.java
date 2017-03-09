@@ -1,3 +1,4 @@
+package com.rlt.automation.tests;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -14,6 +15,8 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+
+import com.rlt.automation.base.LoginPage;
 
 public abstract class BaseTest {
 	

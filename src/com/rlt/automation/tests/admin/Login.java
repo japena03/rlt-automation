@@ -1,3 +1,4 @@
+package com.rlt.automation.tests.admin;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +12,8 @@ import org.openqa.selenium.remote.Augmenter;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+
+import com.rlt.automation.base.LoginPage;
 
 public class Login {
 	private WebDriver driver;

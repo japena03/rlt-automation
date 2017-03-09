@@ -1,6 +1,11 @@
+package com.rlt.automation.tests.admin;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import com.rlt.automation.admin.CentersPage;
+import com.rlt.automation.tests.BaseTest;
+import com.rlt.automation.util.Comparison;
 
 import java.util.ArrayList;
 import java.util.HashMap;

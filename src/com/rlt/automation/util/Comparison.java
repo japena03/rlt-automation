@@ -1,3 +1,4 @@
+package com.rlt.automation.util;
 
 public enum Comparison {
 	
