@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.rlt.automation.admin.CentersPage;
+import com.rlt.automation.admin.CoveragesPage;
 import com.rlt.automation.tests.BaseTest;
 import com.rlt.automation.util.Comparison;
 
@@ -26,11 +27,45 @@ public class CentersPageRegression extends BaseTest {
         cp.clickNewButton();
         cp.setName("automation-test");
         cp.clickApplyButton();
+        
         boolean clickNewCenter = cp.clickItem("automation-test");
         Assert.assertEquals(clickNewCenter, true);
         cp.clickDeleteButton();
         
         //TODO Use a driverwait here, should not be using thread sleep. If we don't wait a bit before the end of the method the center doesn't get deleted properly
+        Thread.sleep(1000L);
+    }
+    
+    @Test
+    public void testNewCenterWithCoverage() throws InterruptedException {
+    	String coverageName = "automation-coverage";
+    	String centerName = "center-with-coverage";
+    	
+    	CoveragesPage coveragePage = new CoveragesPage(driver);
+    	coveragePage.clickCoveragesLink();
+    	coveragePage.clickNewButton();
+    	coveragePage.setName(coverageName);
+    	coveragePage.clickApplyButton();
+    	
+    	Boolean coverageRow = coveragePage.clickItem(coverageName);
+    	Assert.assertTrue(coverageRow);
+    	
+    	coveragePage.clickCentersLink();
+    	cp.clickNewButton();
+    	cp.setName(centerName);
+    	cp.setCoverage(coverageName);
+    	cp.clickApplyButton();
+    	
+    	Boolean clickCenter = cp.clickItem(centerName);
+    	Assert.assertTrue(clickCenter);
+    	cp.clickDeleteButton();
+    	
+    	cp.clickCoveragesLink();
+    	
+    	coveragePage.clickItem(coverageName);
+    	coveragePage.clickDeleteButton();
+    	
+    	//TODO Use a driverwait here, should not be using thread sleep. If we don't wait a bit before the end of the method the center doesn't get deleted properly
         Thread.sleep(1000L);
     }
 

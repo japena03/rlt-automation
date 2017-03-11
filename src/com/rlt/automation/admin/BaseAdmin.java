@@ -405,13 +405,20 @@ public class BaseAdmin extends BaseSite {
         }
     }
 
-    protected void buildAllRows(){
+    protected Integer buildAllRows(){
         allRows = new ArrayList<HashMap<String, String>>();
 
         gridRoot = driver.findElement(By.xpath(XpathConstants.ADMIN_GRID_ROOT));
         List <WebElement> rows = gridRoot.findElements(By.xpath("./div"));
 
-        for(int i = 0; i < rows.size(); ++i){
+        /**
+         *  When the grid is empty we'll still return 1 single row which is of class type "x-grid-empty". In 
+         *  this case don't do anything just return 0 as the number of rows built
+         */
+        if(rows.size() == 1 && ((WebElement)rows.get(0)).getAttribute("class").equals("x-grid-empty"))
+        	return 0;
+        	
+        for(int i = 0; i < rows.size(); ++i) {
             HashMap<String, String> rowEntry = new HashMap<String, String>();
             List<WebElement> values = rows.get(i).findElements(By.xpath("./table/tbody/tr/td/div"));
 
@@ -419,7 +426,7 @@ public class BaseAdmin extends BaseSite {
                 * I have to use allColumnHeaders.size() because the values list returns all columns
                 * including the hidden ones which causes an outOfBound index exception
                 */
-            if(allColumnHeaders.size() == 0 || allColumnHeaders == null) {
+            if(allColumnHeaders == null || allColumnHeaders.size() == 0) {
                 throw new RuntimeException("Something went wrong, we don't have column headers for some reason");
             }
 
@@ -430,6 +437,8 @@ public class BaseAdmin extends BaseSite {
             }
             allRows.add(rowEntry);
         }
+        
+        return allRows.size();
     }
 
     public ArrayList<HashMap<String, String>> getAllRows() {
@@ -517,10 +526,17 @@ public class BaseAdmin extends BaseSite {
     }
     
     public void clickCentersLink() {
-        String centersXpath = "((//div[@class=\"x-tree3-node-ct\"])[1])/*[1]";
-
-        WebElement centersLink = driver.findElement(By.xpath(centersXpath));
+        WebElement centersLink = driver.findElement(By.xpath(XpathConstants.ADMIN_CENTERS_LINK));
         centersLink.click();
+        waitForLoad();
+
+        buildColumnsMap();
+        buildAllRows();
+    }
+    
+    public void clickCoveragesLink() {
+    	WebElement coveragesLink = driver.findElement(By.xpath(XpathConstants.ADMIN_COVERAGES_LINK));
+    	coveragesLink.click();
         waitForLoad();
 
         buildColumnsMap();

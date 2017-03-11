@@ -10,6 +10,8 @@ public class XpathConstants {
 	public static String GENERAL_ADMIN_LINK = "//span[@id=\"adminMenu\"]/a[1]";
 	
 	// Admin xpaths
+	public static String ADMIN_CENTERS_LINK = "((//div[@class=\"x-tree3-node-ct\"])[1])/*[1]";
+	public static String ADMIN_COVERAGES_LINK = "((//div[@class=\"x-tree3-node-ct\"])[3])/*[1]";
 	public static String ADMIN_REFRESH_BUTTON = "((//div[@id=\"gridPager\"])//button[@type=\"button\"])[5]";
 	
     public static String ADMIN_BOTTOM_PANEL_ROOT = "//div[@id=\"gridPager\"]/table/tbody/tr";
@@ -51,4 +53,8 @@ public class XpathConstants {
     public static String CENTERS_REFS_LINKS_BUTTON = "//div[@id=\"tabItemReferences\"]//button[contains(text(),\"Links\")]";
     public static String CENTERS_PARENT_CENTER_DROPDOWN_BUTTON = "((//div[starts-with(@role, \"combobox\")])//img)[2]";
     public static String CENTERS_COVERAGE_DROPDOWN_BUTTON = "((//div[starts-with(@role, \"combobox\")])//img)[3]";
+    
+    // Coverages Page Details Fields
+    public static String COVERAGES_NAME_FIELD = "//div[@id=\"detailsTabPanel\"]//td[text()=\"Name: \"]/..//input";
+    public static String COVERAGES_INHERIT_PARENT_COV_CHECKBOX = "//div[@id=\"detailsTabPanel\"]//td[text()=\"Inherit Parent Coverage: \"]/..//input";
 }

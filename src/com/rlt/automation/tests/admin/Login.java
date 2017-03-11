@@ -9,6 +9,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.Augmenter;
+import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -26,7 +27,9 @@ public class Login {
         driver.manage().window().maximize();
 
 		LoginPage login = new LoginPage(driver);
-		login.login("localhost", "sadm", "es");
+		login.login("localhost", "sadm", "ems");
+		
+		Assert.assertTrue(driver.getTitle().contains("Alarm List"), "Error: Expected Alarm List page");
 	}
 	
 	@AfterMethod
