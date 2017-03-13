@@ -1,5 +1,6 @@
 package com.rlt.automation.tests.admin;
 
+import org.openqa.selenium.Alert;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -68,6 +69,32 @@ public class CentersPageRegression extends BaseTest {
     	//TODO Use a driverwait here, should not be using thread sleep. If we don't wait a bit before the end of the method the center doesn't get deleted properly
         Thread.sleep(1000L);
     }
+    
+    /* 
+     * The production and system centers are required by the system and therefore we should never
+     * allow those centers to be deleted. Any system with ID < 1000 is actually not allowed to be deleted.
+     */
+    @Test
+    public void testDeleteProdAndSysCenters() throws InterruptedException {
+    	String[] undeleteableCenters = {"system", "production"};
+    	String errorMessage = "An error has occurred on the server: [RLTDB0001DVAL] This record is required by the application and can't be deleted.";
+    	
+    	for(int i = 0; i < undeleteableCenters.length; ++i) {
+    		// Click center, ensure we found it and were able to click on it
+    		Boolean clickCenter = cp.clickItem(undeleteableCenters[i]);
+    		Assert.assertTrue(clickCenter);
+    		
+    		// Click the delete button then verify we get an alert with "unable to delete" message"
+    		// The clickDeleteButton method accepts the initial alert, I must then wait a little bit
+    		// for the 2nd alert to pop up
+    		cp.clickDeleteButton();
+    		Thread.sleep(500);
+    		
+        	String alertMessage = cp.getAlertText();
+        	Assert.assertEquals(alertMessage, errorMessage);
+        	cp.acceptAlert();
+    	}
+    }
 
     @Test
     public void sortEveryField() throws Exception {
@@ -76,7 +103,7 @@ public class CentersPageRegression extends BaseTest {
         newCenter("00-center", null, "00-parent");
         newCenter("zz-center", null, "zz-parent");
 
-        String[] columns = {"Name", "Coverage", "Full Center Name", "Parent Center", "ID", "Child Centers", "Entity Children", "Link Children"};
+        String[] columns = {"Name", "Coverage", "Full Center Name", "Parent Center", "ID", "Child Centers", "Entity Children", "Link Children", "Users Default", "Domain Name", "Domain Id" };
         cp.displayColumns(columns);
 
         sort("Name", "ascending");

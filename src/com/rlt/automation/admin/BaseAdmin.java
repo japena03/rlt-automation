@@ -304,10 +304,15 @@ public class BaseAdmin extends BaseSite {
         WebElement deleteButton = driver.findElement(By.xpath(XpathConstants.ADMIN_DELETE_BUTTON));
 
         if( deleteButton.getAttribute("aria-disabled").equals("true")) {
-            System.out.println("Delete button is disabled, active alarms? children objects?");
+        	throw new InterruptedException("Delete button is disabled, active alarms? children objects?");
         }
         else {
             deleteButton.click();
+            
+            WebDriverWait wait = new WebDriverWait(driver, 5);
+            wait.ignoring(NoAlertPresentException.class);
+            wait.until(ExpectedConditions.alertIsPresent());
+            
             Alert alert = driver.switchTo().alert();
             alert.accept();
         }
@@ -523,6 +528,14 @@ public class BaseAdmin extends BaseSite {
         if(requiredField != null) {
             throw new RuntimeException("Required fields were left blank!");
         }
+    }
+    
+    public String getAlertText() {
+    	return driver.switchTo().alert().getText();
+    }
+    
+    public void acceptAlert() {
+    	driver.switchTo().alert().accept();
     }
     
     public void clickCentersLink() {
