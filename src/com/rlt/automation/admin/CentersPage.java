@@ -21,6 +21,12 @@ public class CentersPage extends BaseAdmin {
         }
         nameField.sendKeys(name);
     }
+    
+    public String getName() {
+    	String name = driver.findElement(By.xpath(XpathConstants.CENTERS_NAME_FIELD)).getText();
+    
+    	return name.equals("") ? null : name;
+    }
 
     public void setParentCenter(String parentCenter) throws Exception {
         String parentCenterCombolistXpath = "//div[starts-with(@class,\"x-combo-list\") and text()=\"" + parentCenter + "\"]";
@@ -33,6 +39,10 @@ public class CentersPage extends BaseAdmin {
         
         WebElement parentCenterCombolist = driver.findElement(By.xpath(parentCenterCombolistXpath));
         parentCenterCombolist.click();
+    }
+    
+    public String getParentCenter() {
+    	return driver.findElement(By.xpath(XpathConstants.CENTERS_PARENT_CENTER_FIELD)).getAttribute("value");
     }
 
     public void setCoverage(String coverage) throws InterruptedException {

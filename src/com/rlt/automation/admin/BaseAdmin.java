@@ -316,12 +316,22 @@ public class BaseAdmin extends BaseSite {
             Alert alert = driver.switchTo().alert();
             alert.accept();
         }
+        
+        //TODO Use a driverwait here, should not be using thread sleep. If we don't wait a bit before the end of the method the center doesn't get deleted properly
+        Thread.sleep(1000);
+        
+        // Rebuild grid items since item was deleted
+        waitForLoad();
+        buildAllRows();
     }
 
 	public void clickCopyButton() throws Exception{
 		WebElement copyButton = driver.findElement(By.xpath(XpathConstants.ADMIN_COPY_BUTTON));
 		copyButton.click();
 		waitForApplyButton();
+		
+		//TODO for some reason wait for apply button isn't sufficient
+		Thread.sleep(1000);
 	}
 
     public int getNumberOfPages() {
@@ -474,6 +484,13 @@ public class BaseAdmin extends BaseSite {
     private void waitForApplyButton() {
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(XpathConstants.ADMIN_APPLY_BUTTON)));
+        
+        //TODO this is not appropriate but the wait until condition doesnt seem to be working 
+        try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
     }
 
     protected void waitForLoad() {

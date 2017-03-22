@@ -9,6 +9,8 @@ import com.rlt.automation.admin.CoveragesPage;
 import com.rlt.automation.tests.BaseTest;
 import com.rlt.automation.util.Comparison;
 
+import sun.font.CreatedFontTracker;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -65,9 +67,6 @@ public class CentersPageRegression extends BaseTest {
     	
     	coveragePage.clickItem(coverageName);
     	coveragePage.clickDeleteButton();
-    	
-    	//TODO Use a driverwait here, should not be using thread sleep. If we don't wait a bit before the end of the method the center doesn't get deleted properly
-        Thread.sleep(1000L);
     }
     
     /* 
@@ -94,6 +93,41 @@ public class CentersPageRegression extends BaseTest {
         	Assert.assertEquals(alertMessage, errorMessage);
         	cp.acceptAlert();
     	}
+    }
+    
+    /* 
+     * When a center is copied only the parent center and coverage should be retained, verify name is null
+     */
+    @Test
+    public void testCopyCenter() throws Exception {
+    	String parentCenter = "parent-center";
+    	String childCenter = "child-center";
+    	String centerCopy = "child-center-copy";
+    
+    	newCenter(parentCenter, null, null);
+    	newCenter(childCenter, null, parentCenter);
+    	
+    	Boolean childCenterClicked = cp.clickItem(childCenter);
+    	Assert.assertTrue(childCenterClicked);
+    	
+    	cp.clickCopyButton();
+    	
+    	Assert.assertEquals(cp.getName(), null);
+    	Assert.assertEquals(cp.getParentCenter(), parentCenter);
+    	
+    	cp.setName(centerCopy);
+    	cp.clickApplyButton();
+    	
+    	Assert.assertTrue(cp.clickItem(centerCopy));
+    	
+    	// Delete centers
+    	cp.clickDeleteButton();
+    	
+    	cp.clickItem(childCenter);
+    	cp.clickDeleteButton();
+    	
+    	cp.clickItem(parentCenter);
+    	cp.clickDeleteButton();
     }
 
     @Test
@@ -130,6 +164,10 @@ public class CentersPageRegression extends BaseTest {
             cp.setCoverage(coverage);
         }
         cp.clickApplyButton();
+        
+        Assert.assertEquals(cp.clickItem(name), true);
+        
+        Thread.sleep(1000);
     }
 
     private void sort(String col, String order) throws InterruptedException {
