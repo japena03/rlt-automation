@@ -14,16 +14,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.rlt.automation.util.Comparison;
 import com.rlt.automation.util.XpathConstants;
 
-public class BaseAdmin extends BaseSite {
+public abstract class BaseAdmin extends BaseSite { 
     private HashMap<String,Integer> allColumnHeaders;
     private ArrayList<String> positionToColumnName;
     private ArrayList<HashMap<String, String>> allRows;
     private WebElement gridRoot;
-//    private WebElement bottomPanelItems;
-
+    
     BaseAdmin(WebDriver driver){
         super(driver);
-//        bottomPanelItems = driver.findElement(By.xpath(XpathConstants.ADMIN_BOTTOM_PANEL_ROOT)); //TODO this will only work if we're already at the admin page, will need a different work around
     }
 
 	public void clickRefreshButton() {
@@ -377,9 +375,9 @@ public class BaseAdmin extends BaseSite {
         WebElement displayingLabel = bottomPanelItems.findElement(By.xpath("./td[@class=\"x-toolbar-right\"]/table/tbody/tr/td/table/tbody/tr/td[5]/div"));
 
         String displayText = displayingLabel.getText();
-        displayText = displayText.substring(displayText.length() - 1);
+        String[] displayTextPart = displayText.split(" ");
 
-        return Integer.parseInt(displayText);
+        return Integer.parseInt(displayTextPart[5]);
     }
 
     public int getResultsPerPage() {
@@ -478,6 +476,7 @@ public class BaseAdmin extends BaseSite {
             }
         }
 
+        //TODO if we're unable to find the row to click we should actually throw an error not just return false
         return false;
     }
 
@@ -534,18 +533,6 @@ public class BaseAdmin extends BaseSite {
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(elementXpath)));
     }
-
-    private void checkForRequiredFields() {
-        /*
-        I may run into a problem with required fields in non-active tabs as those will be hidden icons. I could potentially search for
-        the red lettering on each tab also as a way to identify missed fields.
-         */
-        String requiredFieldIconXpath = "//div[contains(@class,\"tone-invalid-icon\") and not(contains(@class,\"tone-empty-icon\"))]";
-        WebElement requiredField = driver.findElement(By.xpath(requiredFieldIconXpath));
-        if(requiredField != null) {
-            throw new RuntimeException("Required fields were left blank!");
-        }
-    }
     
     public String getAlertText() {
     	return driver.switchTo().alert().getText();
@@ -560,8 +547,15 @@ public class BaseAdmin extends BaseSite {
         centersLink.click();
         waitForLoad();
 
-        buildColumnsMap();
-        buildAllRows();
+        updateGridForPage();
+    }
+    
+    public void clickEntitiesLink() {
+    	WebElement entitiesLink = driver.findElement(By.xpath(XpathConstants.ADMIN_ENTITIES_LINK));
+    	entitiesLink.click();
+        waitForLoad();
+        
+        updateGridForPage();
     }
     
     public void clickCoveragesLink() {
@@ -569,7 +563,27 @@ public class BaseAdmin extends BaseSite {
     	coveragesLink.click();
         waitForLoad();
 
-        buildColumnsMap();
+        updateGridForPage();
+    }
+    
+    /* 
+     * Update the grid for the calling object
+     */
+    protected void updateGridForPage() {
+    	buildColumnsMap();
         buildAllRows();
+    }
+    
+    protected void selectFromDropdown(String name, String dropDownButtonXpath) {
+    	String nameInComboListXpath = "//div[starts-with(@class,\"x-combo-list\") and text()=\"" + name + "\"]";
+    	
+    	WebElement dropdownbutton = driver.findElement(By.xpath(dropDownButtonXpath));
+        dropdownbutton.click();
+        
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(nameInComboListXpath)));
+        
+        WebElement combolist = driver.findElement(By.xpath(nameInComboListXpath));
+        combolist.click();
     }
 }

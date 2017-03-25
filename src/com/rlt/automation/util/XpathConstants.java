@@ -11,6 +11,7 @@ public class XpathConstants {
 	
 	// Admin xpaths
 	public static String ADMIN_CENTERS_LINK = "((//div[@class=\"x-tree3-node-ct\"])[1])/*[1]";
+	public static String ADMIN_ENTITIES_LINK = "((//div[@class=\"x-tree3-node-ct\"])[1])/*[5]";
 	public static String ADMIN_COVERAGES_LINK = "((//div[@class=\"x-tree3-node-ct\"])[3])/*[1]";
 	public static String ADMIN_REFRESH_BUTTON = "((//div[@id=\"gridPager\"])//button[@type=\"button\"])[5]";
 	
@@ -57,4 +58,9 @@ public class XpathConstants {
     // Coverages Page Details Fields
     public static String COVERAGES_NAME_FIELD = "//div[@id=\"detailsTabPanel\"]//td[text()=\"Name: \"]/..//input";
     public static String COVERAGES_INHERIT_PARENT_COV_CHECKBOX = "//div[@id=\"detailsTabPanel\"]//td[text()=\"Inherit Parent Coverage: \"]/..//input";
+    
+    // Entities Page Details Fields
+    public static String ENTITIES_NAME_FIELD = "//div[@id=\"detailsTabPanel\"]//td[text()=\"Name: \"]/..//input";
+    public static String ENTITIES_CENTER_DROPDOWN_BUTTON = "((//div[@id=\"tabItemGeneral\"]/table/tbody/tr)[3]/td)[2]//img";
+    public static String ENTITIES_CLASS_DROPDOWN_BUTTON = "((//div[@id=\"tabItemGeneral\"]/table/tbody/tr)[3]/td)[4]//img";
 }

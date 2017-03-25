@@ -1,15 +1,13 @@
 package com.rlt.automation.tests.admin;
 
-import org.openqa.selenium.Alert;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.rlt.automation.admin.CentersPage;
 import com.rlt.automation.admin.CoveragesPage;
+import com.rlt.automation.admin.EntitiesPage;
 import com.rlt.automation.tests.BaseTest;
 import com.rlt.automation.util.Comparison;
-
-import sun.font.CreatedFontTracker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -129,6 +127,59 @@ public class CentersPageRegression extends BaseTest {
     	cp.clickItem(parentCenter);
     	cp.clickDeleteButton();
     }
+    
+    /* 
+     * If a center has entity references do not allow deletion
+     */
+    @Test
+    public void dontAllowCenterDeleteWithEntityReferences() throws Exception {
+    	// Create new center
+    	String testCenter = "test";
+    	int numberOfCenters = cp.getNumberOfItems();
+    	newCenter(testCenter, null, null);
+    	Assert.assertEquals(numberOfCenters + 1, cp.getNumberOfItems());
+    	
+    	// Create entity with center that was just created
+    	EntitiesPage entitiesPage = new EntitiesPage(driver);
+    	entitiesPage.clickEntitiesLink();
+    	String entityName = "test-entity";
+    	int numberOfEntities = entitiesPage.getNumberOfItems();
+    	
+    	entitiesPage.clickNewButton();
+    	entitiesPage.setName(entityName);
+    	entitiesPage.setCenter(testCenter);
+    	entitiesPage.setClass("entity");
+    	entitiesPage.clickApplyButton();
+    	Assert.assertEquals(numberOfEntities + 1, entitiesPage.getNumberOfItems());
+    	
+    	// Navigate back to centers and try to delete the center
+    	cp.clickCentersLink();
+    	cp.clickItem(testCenter);
+    	cp.clickReferencesTab();
+    	Assert.assertEquals(cp.getNumberOfReferencedEntities(), 1);
+    	
+    	cp.clickDeleteButton();
+    	String errorMessage = "This center can't be deleted because it is in use by 1 or more CDR Collectors.";
+    	Thread.sleep(500);
+		
+    	String alertMessage = cp.getAlertText();
+    	Assert.assertEquals(alertMessage, errorMessage);
+    	cp.acceptAlert();
+    	
+    	// Go back to entities and delete entity
+    	entitiesPage.clickEntitiesLink();
+    	numberOfEntities = entitiesPage.getNumberOfItems();
+    	entitiesPage.clickItem(entityName);
+    	entitiesPage.clickDeleteButton();
+    	Assert.assertEquals(numberOfEntities - 1, entitiesPage.getNumberOfItems());
+    	
+    	// Now delete the center
+    	cp.clickCentersLink();
+    	numberOfCenters = cp.getNumberOfItems();
+    	cp.clickItem(testCenter);
+    	cp.clickDeleteButton();
+    	Assert.assertEquals(numberOfCenters - 1, cp.getNumberOfItems());
+    }
 
     @Test
     public void sortEveryField() throws Exception {
@@ -153,7 +204,7 @@ public class CentersPageRegression extends BaseTest {
     	int rows = cp.createFilter("Name", Comparison.EQUAL_TO, "system");
     	Assert.assertEquals(rows, 1);
     }
-
+    
     private void newCenter(String name, String coverage, String parent) throws Exception {
         cp.clickNewButton();
         cp.setName(name);

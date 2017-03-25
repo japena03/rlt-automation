@@ -3,8 +3,6 @@ package com.rlt.automation.admin;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.rlt.automation.util.XpathConstants;
 
@@ -29,16 +27,7 @@ public class CentersPage extends BaseAdmin {
     }
 
     public void setParentCenter(String parentCenter) throws Exception {
-        String parentCenterCombolistXpath = "//div[starts-with(@class,\"x-combo-list\") and text()=\"" + parentCenter + "\"]";
-        
-        WebElement dropdownbutton = driver.findElement(By.xpath(XpathConstants.CENTERS_PARENT_CENTER_DROPDOWN_BUTTON));
-        dropdownbutton.click();
-		
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(parentCenterCombolistXpath)));
-        
-        WebElement parentCenterCombolist = driver.findElement(By.xpath(parentCenterCombolistXpath));
-        parentCenterCombolist.click();
+        selectFromDropdown(parentCenter, XpathConstants.CENTERS_PARENT_CENTER_DROPDOWN_BUTTON);
     }
     
     public String getParentCenter() {
@@ -46,16 +35,7 @@ public class CentersPage extends BaseAdmin {
     }
 
     public void setCoverage(String coverage) throws InterruptedException {
-        String coverageCombolistXpath = "//div[starts-with(@class,\"x-combo-list\") and text()=\"" + coverage + "\"]";
-        
-        WebElement dropdownbutton = driver.findElement(By.xpath(XpathConstants.CENTERS_COVERAGE_DROPDOWN_BUTTON));
-        dropdownbutton.click();
-        
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(coverageCombolistXpath)));
-
-        WebElement coverageCombolist = driver.findElement(By.xpath(coverageCombolistXpath));
-        coverageCombolist.click();
+        selectFromDropdown(coverage, XpathConstants.CENTERS_COVERAGE_DROPDOWN_BUTTON);
     }
 
     public void clickReferencedCenters() {
