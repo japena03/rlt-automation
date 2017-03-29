@@ -5,7 +5,7 @@
 	<property name="build.dir" value="${basedir}/build"/>
 	<property name="lib.dir" value="${basedir}/lib"/>
 	<property name="src.dir" value="${basedir}/src"/>
-	<property name="tests.dir" value="${basedir}/tests/"/>
+	<property name="tests.dir" value="${basedir}/src/com/rlt/automation/tests"/>
 
 	<target name="setClassPath">
 		<path id="classpath_jars">
@@ -72,7 +72,7 @@
                   this will generate report NG report
                 -->
                 <testng classpath="${test.classpath}:${build.dir}">
-                        <xmlfileset dir="${tests.dir}" includes="centers.xml"/>
+                        <xmlfileset dir="${tests.dir}/testng" includes="centers.xml"/>
                 </testng>
         </target>
 </project>
