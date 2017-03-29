@@ -23,6 +23,8 @@ public abstract class BaseAdmin extends BaseSite {
     BaseAdmin(WebDriver driver){
         super(driver);
     }
+    
+    public abstract void goToPage();
 
 	public void clickRefreshButton() {
 		WebElement refreshButton = driver.findElement(By.xpath(XpathConstants.ADMIN_REFRESH_BUTTON));
@@ -542,29 +544,29 @@ public abstract class BaseAdmin extends BaseSite {
     	driver.switchTo().alert().accept();
     }
     
-    public void clickCentersLink() {
-        WebElement centersLink = driver.findElement(By.xpath(XpathConstants.ADMIN_CENTERS_LINK));
-        centersLink.click();
-        waitForLoad();
-
-        updateGridForPage();
-    }
+//    public void clickCentersLink() {
+//        WebElement centersLink = driver.findElement(By.xpath(XpathConstants.ADMIN_CENTERS_LINK));
+//        centersLink.click();
+//        waitForLoad();
+//
+//        updateGridForPage();
+//    }
     
-    public void clickEntitiesLink() {
-    	WebElement entitiesLink = driver.findElement(By.xpath(XpathConstants.ADMIN_ENTITIES_LINK));
-    	entitiesLink.click();
-        waitForLoad();
-        
-        updateGridForPage();
-    }
+//    public void clickEntitiesLink() {
+//    	WebElement entitiesLink = driver.findElement(By.xpath(XpathConstants.ADMIN_ENTITIES_LINK));
+//    	entitiesLink.click();
+//        waitForLoad();
+//        
+//        updateGridForPage();
+//    }
     
-    public void clickCoveragesLink() {
-    	WebElement coveragesLink = driver.findElement(By.xpath(XpathConstants.ADMIN_COVERAGES_LINK));
-    	coveragesLink.click();
-        waitForLoad();
-
-        updateGridForPage();
-    }
+//    public void clickCoveragesLink() {
+//    	WebElement coveragesLink = driver.findElement(By.xpath(XpathConstants.ADMIN_COVERAGES_LINK));
+//    	coveragesLink.click();
+//        waitForLoad();
+//
+//        updateGridForPage();
+//    }
     
     /* 
      * Update the grid for the calling object

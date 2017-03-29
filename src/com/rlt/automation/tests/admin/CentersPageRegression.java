@@ -20,7 +20,7 @@ public class CentersPageRegression extends BaseTest {
 	public void doSpecificSetup() throws Exception {
 		cp = new CentersPage(driver);
 		cp.goToGeneralAdmin();
-		cp.clickCentersLink();
+		cp.goToPage();
 	}
 
     @Test
@@ -43,7 +43,7 @@ public class CentersPageRegression extends BaseTest {
     	String centerName = "center-with-coverage";
     	
     	CoveragesPage coveragePage = new CoveragesPage(driver);
-    	coveragePage.clickCoveragesLink();
+    	coveragePage.goToPage();
     	coveragePage.clickNewButton();
     	coveragePage.setName(coverageName);
     	coveragePage.clickApplyButton();
@@ -51,7 +51,7 @@ public class CentersPageRegression extends BaseTest {
     	Boolean coverageRow = coveragePage.clickItem(coverageName);
     	Assert.assertTrue(coverageRow);
     	
-    	coveragePage.clickCentersLink();
+    	cp.goToPage();
     	cp.clickNewButton();
     	cp.setName(centerName);
     	cp.setCoverage(coverageName);
@@ -61,7 +61,7 @@ public class CentersPageRegression extends BaseTest {
     	Assert.assertTrue(clickCenter);
     	cp.clickDeleteButton();
     	
-    	cp.clickCoveragesLink();
+    	coveragePage.goToPage();
     	
     	coveragePage.clickItem(coverageName);
     	coveragePage.clickDeleteButton();
@@ -141,7 +141,7 @@ public class CentersPageRegression extends BaseTest {
     	
     	// Create entity with center that was just created
     	EntitiesPage entitiesPage = new EntitiesPage(driver);
-    	entitiesPage.clickEntitiesLink();
+    	entitiesPage.goToPage();
     	String entityName = "test-entity";
     	int numberOfEntities = entitiesPage.getNumberOfItems();
     	
@@ -153,7 +153,7 @@ public class CentersPageRegression extends BaseTest {
     	Assert.assertEquals(numberOfEntities + 1, entitiesPage.getNumberOfItems());
     	
     	// Navigate back to centers and try to delete the center
-    	cp.clickCentersLink();
+    	cp.goToPage();
     	cp.clickItem(testCenter);
     	cp.clickReferencesTab();
     	Assert.assertEquals(cp.getNumberOfReferencedEntities(), 1);
@@ -167,14 +167,14 @@ public class CentersPageRegression extends BaseTest {
     	cp.acceptAlert();
     	
     	// Go back to entities and delete entity
-    	entitiesPage.clickEntitiesLink();
+    	entitiesPage.goToPage();
     	numberOfEntities = entitiesPage.getNumberOfItems();
     	entitiesPage.clickItem(entityName);
     	entitiesPage.clickDeleteButton();
     	Assert.assertEquals(numberOfEntities - 1, entitiesPage.getNumberOfItems());
     	
     	// Now delete the center
-    	cp.clickCentersLink();
+    	cp.goToPage();
     	numberOfCenters = cp.getNumberOfItems();
     	cp.clickItem(testCenter);
     	cp.clickDeleteButton();

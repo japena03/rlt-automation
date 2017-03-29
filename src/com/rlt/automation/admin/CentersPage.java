@@ -121,4 +121,14 @@ public class CentersPage extends BaseAdmin {
 
         return Integer.parseInt(numberOfReferencedLinks);
     }
+
+	@Override
+	public void goToPage() {
+		WebElement centersLink = driver.findElement(By.xpath(XpathConstants.ADMIN_CENTERS_LINK));
+        centersLink.click();
+        waitForLoad();
+
+        updateGridForPage();
+		
+	}
 }

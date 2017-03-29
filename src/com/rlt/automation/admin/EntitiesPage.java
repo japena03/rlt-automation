@@ -34,4 +34,13 @@ public class EntitiesPage extends BaseAdmin {
     public void setClass(String name) {
     	selectFromDropdown(name, XpathConstants.ENTITIES_CLASS_DROPDOWN_BUTTON);
     }
+
+	@Override
+	public void goToPage() {
+		WebElement entitiesLink = driver.findElement(By.xpath(XpathConstants.ADMIN_ENTITIES_LINK));
+    	entitiesLink.click();
+        waitForLoad();
+        
+        updateGridForPage();
+	}
 }

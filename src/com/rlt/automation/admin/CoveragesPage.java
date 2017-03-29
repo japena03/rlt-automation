@@ -21,4 +21,13 @@ public class CoveragesPage extends BaseAdmin {
 		WebElement inheritCheckbox = driver.findElement(By.xpath(XpathConstants.COVERAGES_INHERIT_PARENT_COV_CHECKBOX));
 		inheritCheckbox.click();
 	}
+
+	@Override
+	public void goToPage() {
+		WebElement coveragesLink = driver.findElement(By.xpath(XpathConstants.ADMIN_COVERAGES_LINK));
+    	coveragesLink.click();
+        waitForLoad();
+
+        updateGridForPage();
+	}
 }
